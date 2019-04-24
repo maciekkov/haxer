@@ -6,23 +6,23 @@
 #include <stdint.h>
 
 #include <vector>
+#include <json.hpp>
 #include <openssl/err.h>
 #include <openssl/ssl.h>
-#include <json.hpp>
 
 namespace {
 
 constexpr int invalidFd = -1;
 
 } // unnamed namespace
-using json =  nlohmann::json;
+using json = nlohmann::json;
 
 class SSLConnection
 {
 public:
     SSLConnection(const uint_least16_t port, const std::string& ip);
 
-    void                 send();
+    void                 send(const json& j);
     std::vector<uint8_t> recive();
 
     int getFd();
@@ -30,7 +30,7 @@ public:
     class SSLExceptions : public std::runtime_error
     {
     public:
-        SocketException(const std::string& method, const std::string& err)
+        SSLExceptions(const std::string& method, const std::string& err)
             : std::runtime_error("Socket Exception: failed to " + method + ": " + err)
         {
         }

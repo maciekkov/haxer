@@ -6,5 +6,15 @@ list(APPEND SOURCE_FILES
     socket/SSLConnection.cpp
 
     )
+find_library(SSL name  ssl HINTS /usr/lib/x86_64-linux-gnu/)
+find_library(THREAD names pthread HINTS /lib/x86_64-linux-gnu/)
 
-add_executable(${project_name} ${SOURCE_FILES})
+
+list(APPEND PROJECT_LIB
+    ${SSL}
+    ${THREAD}
+    )
+
+add_executable(${PROJECT_NAME} ${SOURCE_FILES} )
+
+target_link_libraries(${PROJECT_NAME} ${PROJECT_LIB})
