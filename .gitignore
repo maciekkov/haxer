@@ -1,0 +1,7 @@
+*.config
+*.cpp
+*.creator
+*.creator.user
+*.files
+*.includes
+build
