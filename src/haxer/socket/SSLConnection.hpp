@@ -9,7 +9,7 @@
 #include <json.hpp>
 #include <openssl/err.h>
 #include <openssl/ssl.h>
-
+#include "ISendRecive.hpp"
 namespace {
 
 constexpr int invalidFd = -1;
@@ -17,13 +17,13 @@ constexpr int invalidFd = -1;
 } // unnamed namespace
 using json = nlohmann::json;
 
-class SSLConnection
+class SSLConnection: public ISendRecive<json>
 {
 public:
-    SSLConnection(const uint_least16_t port, const std::string& ip);
+    SSLConnection(const uint16_t port, const std::string& ip);
 
-    void                 send(const json& j);
-    std::string recive();
+    void                 send(Data msg);
+    std::vector<int8_t> recive();
 
     int getFd();
 
@@ -45,7 +45,7 @@ private:
     void setNonBlocking();
     void closeSocket();
     void setSockAddress();
-    void getIpAndPort(uint32_t& ip, uint16_t& port, const sockaddr_in& sockAddress);
+    void reportError(int len);
 
     struct SSLConfiguration
     {
@@ -62,7 +62,6 @@ private:
     int              mSSLFileDescriptor;
     SSLConfiguration mConfig;
     SSL*             mSSL;
-    SSL_METHOD* meth ;
-    SSL_CTX*    ctx  ;
+
 
 };
