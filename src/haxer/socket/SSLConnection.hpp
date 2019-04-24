@@ -23,7 +23,7 @@ public:
     SSLConnection(const uint_least16_t port, const std::string& ip);
 
     void                 send(const json& j);
-    std::vector<uint8_t> recive();
+    std::string recive();
 
     int getFd();
 
@@ -44,7 +44,7 @@ private:
     void connectSSLSocket();
     void setNonBlocking();
     void closeSocket();
-    void setSockAddress(uint32_t ip, uint16_t port, sockaddr_in& sockAddress);
+    void setSockAddress();
     void getIpAndPort(uint32_t& ip, uint16_t& port, const sockaddr_in& sockAddress);
 
     struct SSLConfiguration
@@ -53,6 +53,7 @@ private:
         int         type;
         int         protocol;
         uint32_t    ip;
+        std::string ipName;
         uint16_t    port;
         sockaddr_in address;
     };
@@ -61,4 +62,7 @@ private:
     int              mSSLFileDescriptor;
     SSLConfiguration mConfig;
     SSL*             mSSL;
+    SSL_METHOD* meth ;
+    SSL_CTX*    ctx  ;
+
 };
