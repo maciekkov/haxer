@@ -23,7 +23,7 @@ public:
     SSLConnection(const uint16_t port, const std::string& ip);
 
     void                 send(Data msg);
-    std::vector<int8_t> recive();
+    std::vector<uint8_t> recive();
 
     int getFd();
 

@@ -9,5 +9,5 @@ public:
     using Data              = Message;
 
     virtual void send(Data) = 0;
-    virtual  std::vector<int8_t> recive()   = 0;
+    virtual  std::vector<uint8_t> recive()   = 0;
 };
