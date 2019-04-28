@@ -36,27 +36,41 @@ struct Response
     struct returnData
     {
         int digits;
+        int exemode;
         struct rateInfos
         {
-            float       close;
             int64_t     ctm;
             std::string ctmString;
+            float       close;
             float       high;
             float       low;
             float       open;
             float       vol;
         };
-        std::vector<rateInfos> rates{1000000};
+        std::vector<rateInfos> rates;
     };
 
-    bool status;
     returnData ret;
-
+    bool       status;
 
     friend void from_json(const nlohmann::json& j, Response& p)
     {
-//        j.at("status").get_to(p.status);
-//        j.at("returnData").get_to(p.ret.digits); ?????
+        j.at("status").get_to(p.status);
+        for (auto x : j["returnData"]["rateInfos"])
+        {
+            p.ret.rates.emplace_back<Response::returnData::rateInfos>
+                    (
+{
+                     x.at("ctm").get<int64_t>() ,
+                     x.at("ctmString").get<std::string>() ,
+                     x.at("open").get<float>() ,
+                     x.at("close").get<float>() ,
+                     x.at("high").get<float>() ,
+                     x.at("low").get<float>() ,
+                     x.at("vol").get<float>()
+}
+                     );
+        }
     }
 };
 
