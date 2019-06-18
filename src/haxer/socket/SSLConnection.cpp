@@ -106,7 +106,7 @@ void SSLConnection::reportError(int len)
 }
   std::vector<uint8_t> SSLConnection::recive()
 {
-    auto                 initBufferSize = 100000;
+    auto                 initBufferSize = 1000000;
     std::vector<uint8_t> buffor(initBufferSize);
 
     auto len = SSL_read(mSSL, static_cast<void*>(buffor.data()), buffor.size());

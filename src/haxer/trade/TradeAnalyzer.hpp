@@ -1,47 +1,57 @@
 #pragma once
 
 #include <vector>
+#include "Common.hpp"
 #include <messages/GetChartLastRequest.hpp>
 
-enum class Direction
+enum class TrenDirection
 {
-    UP,
-    DOWN
+    UpTrend,
+    DownTrend
 };
 
-enum class MomentumCandle
+enum class Momomentum
 {
+    NotDetected,
     Yes,
     No
 };
-struct TrackingParameters
-{
-    float high{};
-    float low{};
-    float open{};
-    float close{};
 
-    MomentumCandle momo;
-    Direction      trend;
+class Trend
+{
+public:
+    virtual bool isProcessing();
 };
 
-class TradeAnalyzer
+template <typename Data>
+class Analyzer
+{
+public:
+    void detecting(const Data& data) = 0;
+    void transferDetectedPattern()   = 0;
+};
+
+struct TrendDetails
+{
+    Candle High;
+    Candle Low;
+    Candle Open;
+    Candle Close;
+
+    TrenDirection trend;
+};
+using rateInfos = GetChartLastRequest::Response::returnData::rateInfos;
+
+class TradeAnalyzer : public Analyzer < std::vector<rateInfos>
 {
 public:
     TradeAnalyzer();
 
-    void detecting(const std::vector<GetChartLastRequest::Response::returnData::rateInfos>& chart)
-    {
-        for (const auto candle : chart)
-        {
-            tracker.high  = candle.high;
-            tracker.low   = candle.low;
-            tracker.open  = candle.open;
-            tracker.close = candle.close;
-            tracker.momo  = candle.close < candle.open ? MomentumCandle::Yes : MomentumCandle::No;
-        }
-    }
+    void detecting(const std::vector<rateInfos>& chart);
+    void chartProcessing();
+
 
 private:
-    TrackingParameters tracker;
+    std::vector<Observer> chartWatchers;
+
 };

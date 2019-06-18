@@ -6,8 +6,8 @@ template <typename Message>
 class ISendRecive
 {
 public:
-    using Data              = Message;
+    using Data = Message;
 
-    virtual void send(Data) = 0;
-    virtual  std::vector<uint8_t> recive()   = 0;
+    virtual void                 send(Data) = 0;
+    virtual std::vector<uint8_t> recive()   = 0;
 };

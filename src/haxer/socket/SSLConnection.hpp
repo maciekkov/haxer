@@ -6,10 +6,10 @@
 #include <stdint.h>
 
 #include <vector>
+#include "ISendRecive.hpp"
 #include <json.hpp>
 #include <openssl/err.h>
 #include <openssl/ssl.h>
-#include "ISendRecive.hpp"
 namespace {
 
 constexpr int invalidFd = -1;
@@ -17,7 +17,7 @@ constexpr int invalidFd = -1;
 } // unnamed namespace
 using json = nlohmann::json;
 
-class SSLConnection: public ISendRecive<json>
+class SSLConnection : public ISendRecive<json>
 {
 public:
     SSLConnection(const uint16_t port, const std::string& ip);
@@ -62,6 +62,4 @@ private:
     int              mSSLFileDescriptor;
     SSLConfiguration mConfig;
     SSL*             mSSL;
-
-
 };

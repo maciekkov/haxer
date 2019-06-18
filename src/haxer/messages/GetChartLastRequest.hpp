@@ -58,20 +58,18 @@ struct Response
         j.at("status").get_to(p.status);
         for (auto x : j["returnData"]["rateInfos"])
         {
-            p.ret.rates.emplace_back<Response::returnData::rateInfos>
-                    (
-{
-                     x.at("ctm").get<int64_t>() ,
-                     x.at("ctmString").get<std::string>() ,
-                     x.at("open").get<float>() ,
-                     x.at("close").get<float>() ,
-                     x.at("high").get<float>() ,
-                     x.at("low").get<float>() ,
-                     x.at("vol").get<float>()
-}
-                     );
+            Response::returnData::rateInfos temp;
+
+            x.at("ctm").get_to(temp.ctm);
+            x.at("ctmString").get_to(temp.ctmString);
+            x.at("open").get_to(temp.open);
+            x.at("close").get_to(temp.close);
+            x.at("high").get_to(temp.high);
+            x.at("low").get_to(temp.low);
+            x.at("vol").get_to(temp.vol);
+
+            p.ret.rates.push_back(temp);
         }
     }
 };
-
 } // namespace GetChartLastRequest
